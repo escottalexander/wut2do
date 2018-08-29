@@ -1,16 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Wut 2 Do</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
+    
 </head>
 <body>
     <header>
         <h1>Wut 2 Do</h1>
     </header>
+    <main role="main" class="app">
+<form>
+    <fieldset>
+        <legend>Location Information</legend>
+    <input type="address" name="address" id="#address" placeholder="Address">
+    <input type="city" name="city" id="#city" placeholder="City">
+    <input type="state" name="state" id="#state" placeholder="State">
+    <input type="zip" name="zip" id="#zip" placeholder="Zip Code">
+    </fieldset>
+    <fieldset>
+        <legend>Preferences</legend>
+        <input type="checkbox">
+    </fieldset>
+    <button type="submit" name="submit" id="submit">Submit</button>
+</form>
+<div id="results">
+
+</div>
+</main>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+<script src="main.js"></script>
 </body>
 </html>
