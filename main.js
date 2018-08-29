@@ -15,7 +15,7 @@ $(event => {
 function searchForResults() {
     event.preventDefault();
     let location = `${$('input[type=address]').val()},${$('input[type=city]').val()},${$('input[type=state]').val()},${$('input[type=zip]').val()}`;
-    let query;
+    let query = $('input[type=search]').val();
     getApiResponse(location, query, renderResponse);
 }
 
@@ -43,7 +43,8 @@ function renderResponse(results) {
     for (let i = 0; i < results.response.venues.length; i ++) {
         let venueName = results.response.venues[i].name;
         let venueLocation = `${results.response.venues[i].location.formattedAddress[0]} ${results.response.venues[i].location.formattedAddress[1]}`;
-    $('#results').append(`<h3>${venueName} - ${venueLocation}</h3>`);
+        
+        $('#results').append(`<h3>${venueName} - ${venueLocation}</h3>`);
     }
-    console.log(results);
+    console.log(results.response.venues);
 }
