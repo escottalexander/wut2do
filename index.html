@@ -16,15 +16,18 @@
 <form>
     <fieldset>
         <legend>Location Information</legend>
-    <input type="address" name="address" id="#address" placeholder="Address">
-    <input type="city" name="city" id="#city" placeholder="City">
-    <input type="state" name="state" id="#state" placeholder="State">
-    <input type="zip" name="zip" id="#zip" placeholder="Zip Code">
+    <input type="address" name="address" id="address" placeholder="Address">
+    <input type="city" name="city" id="city" placeholder="City">
+    <input type="state" name="state" id="state" placeholder="State">
+    <input type="zip" name="zip" id="zip" placeholder="Zip Code">
     </fieldset>
     <fieldset>
         <legend>Preferences</legend>
         <input type="checkbox">
         <input type="search" placeholder="Search">
+        <select name="categories" type="dropdown" id="categories">
+            <option value="all">All Categories</option>
+          </select>
     </fieldset>
     <button type="submit" name="submit" id="submit">Submit</button>
 </form>
