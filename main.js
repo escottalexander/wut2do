@@ -1,10 +1,10 @@
-// fetch('https://api.foursquare.com/v2/venues/explore?client_id=KQZRJLBTVACPKJ2NYBQXS3AZ1ALG0HOWLJVNKI3MKHOPEI3O&client_secret=MNYP4FZLA33QRUFKTMXCXSYJ00OYBYO2M5IHGL3IUOKD1SW4&v=20180323&limit=1&ll=40.7243,-74.0018&query=coffee')
-//     .then(function() {
-//         // Code for handling API response
-//     })
-//     .catch(function() {
-//         // Code for handling errors
-//     });
+//TODO
+// add HTML5 Geolocation
+// maps of venues locations
+// pictures of venue, websites, etc.
+const STORE = {
+    mapId: 0
+};
 const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/search';
 const FOURSQUARE_CATEGORIES_URL = 'https://api.foursquare.com/v2/venues/categories';
 
@@ -70,11 +70,17 @@ function getSearchApiResponse(location, query, categoryId, callback) {
 }
 
 function renderResponse(results) {
+console.log(results.response.venues);
     $('#results').empty();
     for (let i = 0; i < results.response.venues.length; i ++) {
+        let mapId = STORE.mapId;
         let venueName = results.response.venues[i].name;
         let venueLocation = `${results.response.venues[i].location.formattedAddress[0]} ${results.response.venues[i].location.formattedAddress[1]}`;
-        
-        $('#results').append(`<h3>${venueName} - ${venueLocation}</h3>`);
+        let lat = results.response.venues[i].location.lat;
+        let lon = results.response.venues[i].location.lng;
+        $('#results').append(`<h3>${venueName} - ${venueLocation}</h3><div id="map_${mapId}"><img src='https://maps.googleapis.com/maps/api/staticmap?markers=color:blue%7C${lat},${lon}&zoom=18&size=400x400&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></div>`);
+    
     }
 }
+
+//pipe sep %7C
