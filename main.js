@@ -31,11 +31,11 @@ function getCategoriesApiResponse(callback) {
     $.ajax(settings);
 }
 
-function pushCategories (results) {
-    for (let i = 0; i < results.response.categories.length; i ++) {
+function pushCategories(results) {
+    for (let i = 0; i < results.response.categories.length; i++) {
         let categoryName = results.response.categories[i].name;
         let categoryId = results.response.categories[i].id;
-        
+
         $('#categories').append(`<option value=${categoryId}>${categoryName}</option>`);
     }
 }
@@ -60,7 +60,7 @@ function getSearchApiResponse(location, query, categoryId, callback) {
             intent: 'browse',
             near: location,
             query: `${query === undefined ? '' : query}`,
-            categoryId: `${categoryId === 'all' ? '': categoryId}`
+            categoryId: `${categoryId === 'all' ? '' : categoryId}`
         },
         dataType: 'jsonp',
         type: 'GET',
@@ -70,17 +70,27 @@ function getSearchApiResponse(location, query, categoryId, callback) {
 }
 
 function renderResponse(results) {
-console.log(results.response.venues);
+    console.log(results.response.venues);
+    let listOfVenues = results.response.venues;
     $('#results').empty();
-    for (let i = 0; i < results.response.venues.length; i ++) {
-        let mapId = STORE.mapId;
-        let venueName = results.response.venues[i].name;
-        let venueLocation = `${results.response.venues[i].location.formattedAddress[0]} ${results.response.venues[i].location.formattedAddress[1]}`;
-        let lat = results.response.venues[i].location.lat;
-        let lon = results.response.venues[i].location.lng;
-        $('#results').append(`<h3>${venueName} - ${venueLocation}</h3><div id="map_${mapId}"><img src='https://maps.googleapis.com/maps/api/staticmap?markers=color:blue%7C${lat},${lon}&zoom=18&size=400x400&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></div>`);
-    
+    for (let i = 0; i < listOfVenues.length; i++) {
+        let venueName = listOfVenues[i].name;
+        let venueLocation = `${listOfVenues[i].location.formattedAddress[0]} ${listOfVenues[i].location.formattedAddress[1]}`;
+        let lat = listOfVenues[i].location.lat;
+        let lon = listOfVenues[i].location.lng;
+        $('#results').append(`${renderVenue(venueName, venueLocation)}${renderMap(lat, lon, venueName)}`);
+
     }
 }
 
-//pipe sep %7C
+function renderVenue(venueName, venueLocation) {
+    return `<h3>${venueName} - ${venueLocation}</h3>`;
+}
+
+function renderMap(lat, lon, venueName) {
+    let mapId = STORE.mapId;
+    STORE.mapId++;
+    return `
+    <div id="map_${mapId}"><img src='https://maps.googleapis.com/maps/api/staticmap?markers=color:blue%7C${lat},${lon}&zoom=18&size=400x400&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></div>
+    `;
+}
