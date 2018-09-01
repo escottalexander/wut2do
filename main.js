@@ -1,20 +1,55 @@
 //TODO
+// structure the individual venues
 // add HTML5 Geolocation
 // maps of venues locations
 // pictures of venue, websites, etc.
+
 const STORE = {
     mapId: 0
 };
 const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/search';
 const FOURSQUARE_CATEGORIES_URL = 'https://api.foursquare.com/v2/venues/categories';
-
+const GOOGLE_REVERSE_GEOCODING_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 
 
 // page load events and click events handling
 $(event => {
     getCategoriesApiResponse(pushCategories);
     $('#submit').on('click', searchForResults);
+    $('#locate').on('click', geoLocateUser);
 });
+
+function geoLocateUser() {
+    event.preventDefault();
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(reverseGeoLocateApi);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function reverseGeoLocateApi(position) {
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+    const settings = {
+        url: GOOGLE_REVERSE_GEOCODING_URL,
+        data: {
+            latlng: `${lat},${lon}`,
+            key: 'AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'
+        },
+        dataType: 'json',
+        type: 'GET',
+        success: showGeoLocatedAddress
+    };
+    $.ajax(settings);
+    // let results = `${GOOGLE_REVERSE_GEOCODING_URL}?latlng=${lat},${lon}&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8`
+    // showGeoLocatedAddress(results);
+}
+
+function showGeoLocatedAddress(results) {
+    console.log(results);
+}
+
 
 function getCategoriesApiResponse(callback) {
     const settings = {
