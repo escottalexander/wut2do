@@ -46,8 +46,16 @@ function reverseGeoLocateApi(position) {
     // showGeoLocatedAddress(results);
 }
 
-function showGeoLocatedAddress(results) {
-    console.log(results);
+function showGeoLocatedAddress(response) {
+    let houseNum = response.results[0].address_components[0].short_name;
+    let roadName = response.results[0].address_components[1].short_name;
+    let cityName = response.results[0].address_components[2].short_name;
+    let stateName = response.results[0].address_components[5].short_name;
+    let zipCode = response.results[0].address_components[7].short_name;
+    $('input[type=address]').val(`${houseNum} ${roadName}`);
+    $('input[type=city]').val(cityName);
+    $('input[type=state]').val(stateName);
+    $('input[type=zip]').val(zipCode);
 }
 
 
@@ -105,7 +113,7 @@ function getSearchApiResponse(location, query, categoryId, callback) {
 }
 
 function renderResponse(results) {
-    console.log(results.response.venues);
+    console.log(results);
     let listOfVenues = results.response.venues;
     $('#results').empty();
     for (let i = 0; i < listOfVenues.length; i++) {
