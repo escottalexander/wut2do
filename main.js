@@ -1,6 +1,6 @@
 //TODO
 // structure the individual venues
-// add HTML5 Geolocation
+// add error handling to venue api response
 // maps of venues locations
 // pictures of venue, websites, etc.
 
