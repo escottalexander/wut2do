@@ -1,6 +1,6 @@
 //TODO
 // structure the individual venues
-// add error handling to venue api response
+// add error handling to venue api response, test by putting in wrong address
 // maps of venues locations
 // pictures of venue, websites, etc.
 
@@ -8,6 +8,7 @@ const STORE = {
     mapId: 0
 };
 const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/search';
+const FOURSQUARE_VENUE_URL = 'https://api.foursquare.com/v2/venues'
 const FOURSQUARE_CATEGORIES_URL = 'https://api.foursquare.com/v2/venues/categories';
 const GOOGLE_REVERSE_GEOCODING_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 
@@ -42,8 +43,6 @@ function reverseGeoLocateApi(position) {
         success: showGeoLocatedAddress
     };
     $.ajax(settings);
-    // let results = `${GOOGLE_REVERSE_GEOCODING_URL}?latlng=${lat},${lon}&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8`
-    // showGeoLocatedAddress(results);
 }
 
 function showGeoLocatedAddress(response) {
@@ -98,7 +97,7 @@ function getSearchApiResponse(location, query, categoryId, callback) {
             client_id: 'KQZRJLBTVACPKJ2NYBQXS3AZ1ALG0HOWLJVNKI3MKHOPEI3O',
             client_secret: 'MNYP4FZLA33QRUFKTMXCXSYJ00OYBYO2M5IHGL3IUOKD1SW4',
             v: '20180823',
-            limit: 50,
+            limit: 10,
             radius: 10000,
             intent: 'browse',
             near: location,
@@ -113,21 +112,47 @@ function getSearchApiResponse(location, query, categoryId, callback) {
 }
 
 function renderResponse(results) {
-    console.log(results);
+    //console.log(results);
     let listOfVenues = results.response.venues;
     $('#results').empty();
     for (let i = 0; i < listOfVenues.length; i++) {
+        let venueId = listOfVenues[i].id;
         let venueName = listOfVenues[i].name;
         let venueLocation = `${listOfVenues[i].location.formattedAddress[0]} ${listOfVenues[i].location.formattedAddress[1]}`;
         let lat = listOfVenues[i].location.lat;
         let lon = listOfVenues[i].location.lng;
-        $('#results').append(`${renderVenue(venueName, venueLocation)}${renderMap(lat, lon, venueName)}`);
-
+        $('#results').append(`${getVenueApiResponse(venueId, renderVenue)}${renderMap(lat, lon, venueName)}`);
     }
 }
 
-function renderVenue(venueName, venueLocation) {
-    return `<h3>${venueName} - ${venueLocation}</h3>`;
+function getVenueApiResponse(venueId, renderVenue) {
+    const settings = {
+        url: `${FOURSQUARE_VENUE_URL}/${venueId}`,
+        data: {
+            client_id: 'KQZRJLBTVACPKJ2NYBQXS3AZ1ALG0HOWLJVNKI3MKHOPEI3O',
+            client_secret: 'MNYP4FZLA33QRUFKTMXCXSYJ00OYBYO2M5IHGL3IUOKD1SW4',
+            v: '20180823',
+        },
+        dataType: 'jsonp',
+        type: 'GET',
+        success: renderVenue
+    };
+    $.ajax(settings);
+}
+
+function renderVenue(venueInfo) {
+    console.log(venueInfo);
+    let name = venueInfo.response.venue.name;
+    let photoUrl = venueInfo.response.photos.url;
+    let distanceAway = venueInfo;
+    return `
+    <h3>${name}- ${distanceAway}</h3>
+    <div class="venue-info hidden"> 
+    <img src=${photoUrl} />
+    <div class="map">
+    </div>
+    </div>
+    `;
 }
 
 function renderMap(lat, lon, venueName) {
