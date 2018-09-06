@@ -1,3 +1,25 @@
-#map_0 {
-    height: 100%;
+fieldset {
+    padding: 10px;
+    border: solid blue 5px;
+    border-radius: 10px;
+}
+
+@media (min-width: 600px) {
+
+    body {
+    margin: 10%;
+}
+
+}
+
+@media (min-width: 900px) {
+
+    
+
+}
+
+@media (min-width: 1200px) {
+
+    
+
 }
