@@ -11,6 +11,7 @@ const STORE = {
     location: '',
     query: '',
     categoryId: '',
+    currentVenueId: '',
     venues: []
 };
 
@@ -54,7 +55,7 @@ const settings = {
         success: renderResponse
     },
     foursquareVenues: {
-        url: () => `https://api.foursquare.com/v2/venues/${venueId}`,
+        url: STORE.currentVenueId,
         data: {
             client_id: 'KQZRJLBTVACPKJ2NYBQXS3AZ1ALG0HOWLJVNKI3MKHOPEI3O',
             client_secret: 'MNYP4FZLA33QRUFKTMXCXSYJ00OYBYO2M5IHGL3IUOKD1SW4',
@@ -65,9 +66,6 @@ const settings = {
         success: renderVenue
     }
 };
-
-const FOURSQUARE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/search';
-const FOURSQUARE_VENUE_URL = 'https://api.foursquare.com/v2/venues';
 
 // page load events and click events handling
 $(event => {
@@ -141,18 +139,20 @@ function renderResponse(results) {
 }
 
 function getVenueApiResponse(venueId) {
-    const settings = {
-        url: `${FOURSQUARE_VENUE_URL}/${venueId}`,
-        data: {
-            client_id: 'KQZRJLBTVACPKJ2NYBQXS3AZ1ALG0HOWLJVNKI3MKHOPEI3O',
-            client_secret: 'MNYP4FZLA33QRUFKTMXCXSYJ00OYBYO2M5IHGL3IUOKD1SW4',
-            v: '20180823',
-        },
-        dataType: 'jsonp',
-        type: 'GET',
-        success: renderVenue
-    };
-    $.ajax(settings);
+    STORE.currentVenueId = `https://api.foursquare.com/v2/venues/${venueId}`;
+    settings.foursquareVenues.url = STORE.currentVenueId;
+    console.table(STORE);
+    // const settings = {
+    //     url: STORE.currentVenueId,
+    //     data: {
+    //         client_id: 'KQZRJLBTVACPKJ2NYBQXS3AZ1ALG0HOWLJVNKI3MKHOPEI3O',
+    //         client_secret: 'MNYP4FZLA33QRUFKTMXCXSYJ00OYBYO2M5IHGL3IUOKD1SW4',
+    //         v: '20180823',
+    //     },
+    //     dataType: 'jsonp',
+    //     type: 'GET',
+    //     success: renderVenue}
+    $.ajax(settings.foursquareVenues);
 }
 
 function renderVenue(venueInfo) {
@@ -182,15 +182,6 @@ function renderVenue(venueInfo) {
 
 //////////////////////////
 
-// const settings = {
-// 	"foursquare":{
-  
-//   },
-//   "gmaps": {
-  
-//   }
-
-// }
 
 // function updateDefaultSettings() {
 // 	// update the settings object here
