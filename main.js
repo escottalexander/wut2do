@@ -3,9 +3,10 @@
 // add error handling to venue api response, test by putting in wrong address
 // maps of venues locations
 // pictures of venue, websites, etc.
+// investigate zip code issues with geolocation
 
 const STORE = {
-   // mapId: 0,
+    // mapId: 0,
     lat: 0,
     lon: 0,
     location: '',
@@ -72,7 +73,7 @@ $(event => {
     getCategoriesApiResponse(pushCategories);
     $('#submit').on('click', searchForResults);
     $('#locate').on('click', geoLocateUser);
-    $('#results').on('click', '.venue', (event) => getVenueApiResponse(event.target.id));
+    $('#results').on('click', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
 });
 
 function geoLocateUser() {
@@ -125,49 +126,65 @@ function searchForResults() {
 
 
 function renderResponse(results) {
-    console.log(results);
+    //console.log(results);
     let listOfVenues = results.response.venues;
     $('#results').empty();
     for (let i = 0; i < listOfVenues.length; i++) {
         STORE.venues.push(listOfVenues[i]);
         let venueId = listOfVenues[i].id;
+        //console.log(venueId);
         let venueName = listOfVenues[i].name;
-        // let lat = listOfVenues[i].location.lat;
-        // let lon = listOfVenues[i].location.lng;
-        $('#results').append(`<div class="venue" id=${venueId}>${venueName}</div>`);
+        $('#results').append(`<div class="venue" id=${venueId}><h3>${venueName}</h3><div class="venueInfo hidden"></div></div>`);
     }
 }
 
 function getVenueApiResponse(venueId) {
     STORE.currentVenueId = `https://api.foursquare.com/v2/venues/${venueId}`;
     settings.foursquareVenues.url = STORE.currentVenueId;
-    console.table(STORE);
-    // const settings = {
-    //     url: STORE.currentVenueId,
-    //     data: {
-    //         client_id: 'KQZRJLBTVACPKJ2NYBQXS3AZ1ALG0HOWLJVNKI3MKHOPEI3O',
-    //         client_secret: 'MNYP4FZLA33QRUFKTMXCXSYJ00OYBYO2M5IHGL3IUOKD1SW4',
-    //         v: '20180823',
-    //     },
-    //     dataType: 'jsonp',
-    //     type: 'GET',
-    //     success: renderVenue}
     $.ajax(settings.foursquareVenues);
 }
 
 function renderVenue(venueInfo) {
     console.log(venueInfo);
-    // let name = venueInfo.response.venue.name;
-    // let photoUrl = venueInfo.response.photos.url;
-    // let distanceAway = venueInfo;
-    // return `
-    // <h3>${name}- ${distanceAway}</h3>
-    // <div class="venue-info hidden"> 
-    // <img src=${photoUrl} />
-    // <div class="map">
-    // </div>
-    // </div>
-    // `;
+    let id = venueInfo.response.venue.id;
+    let venueDescription = venueInfo.response.venue.description ? venueInfo.response.venue.description : '';
+    let addressArr = venueInfo.response.venue.location.formattedAddress; //array of 3
+    let photoUrl = venueInfo.response.venue.bestPhoto ? `${venueInfo.response.venue.bestPhoto.prefix}300x300${venueInfo.response.venue.bestPhoto.suffix}` : '';
+    let phoneNumber = venueInfo.response.venue.contact.formattedPhone ? venueInfo.response.venue.contact.formattedPhone : '';
+    let openCurrently = venueInfo.response.venue.popular ? venueInfo.response.venue.popular.isOpen ? venueInfo.response.venue.popular.isOpen : '' : ''; //boolean
+    let hoursArr = venueInfo.response.venue.popular ? venueInfo.response.venue.popular.timeframes ? venueInfo.response.venue.popular.timeframes : '' : ''; //Array of 7 starting with today
+    let rating = venueInfo.response.venue.rating ? venueInfo.response.venue.rating : ''; // 7.3
+    let url = venueInfo.response.venue.url ? venueInfo.response.venue.url : '';
+    $(`#${id} > .venueInfo`).append(`
+    <h4>${venueDescription}</h4>
+    ${ rating !== '' ? `<h3 class="rating">Rating: ${rating}</h3>` : ''}
+    <div class="address">${renderAddress(addressArr)}</div>
+    <div class="contact">${phoneNumber}</div>
+    ${ photoUrl !== '' ? `<img class="venueImg" src=${photoUrl} />` : ''}
+    ${ openCurrently !== '' ? openCurrently ? `<h4>Open Currently</h4>`: `<h4>Currently Closed</h4>` : ''}
+    ${ hoursArr !== '' ? `<ul class="hours"> ${renderHours(hoursArr)}</ul>`: ''}
+    ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
+    `);
+}
+
+function renderHours(arr) {
+    let hours = [];
+    for (let i = 0; i < arr.length; i++) {
+        hours.push(`<li><p>${arr[i].days}</p>`);
+        for (let h = 0; h < arr[i].open.length; h ++ ){
+            hours.push(`<p>${arr[i].open[h].renderedTime}</p>`);
+        }
+        hours.push("</li>");
+    }
+    return hours.join('');
+}
+
+function renderAddress(arr) {
+    let address = [];
+    for (let i = 0; i < arr.length; i++) {
+        address.push(`<p>${arr[i]}</p>`);
+    }
+    return address.join('');
 }
 
 // function renderMap(lat, lon, venueName) {
@@ -176,66 +193,4 @@ function renderVenue(venueInfo) {
 //     return `
 //     <div id="map_${mapId}"><img src='https://maps.googleapis.com/maps/api/staticmap?markers=color:blue%7C${lat},${lon}&zoom=18&size=400x400&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></div>
 //     `;
-// }
-
-
-
-//////////////////////////
-
-
-// function updateDefaultSettings() {
-// 	// update the settings object here
-// 	return updatedSettingsObject
-// }
-// const newSettingsForMyReq = updateDefaultSettings(settings.foursquare);
-// $.ajax(newSettingsForMyReq);
-
-// const store = {
-//     mapId: 0,
-//     lat: 0,
-// 		lon: 0,
-// };
-
-// /*
-//             near: `${$('input[type=address]').val()},${$('input[type=city]').val()},${$('input[type=state]').val()},${$('input[type=zip]').val()}`,
-//             query: `${$('input[type=search]').val() === undefined ? '' : $('input[type=search]').val()}`,
-// categoryId: `${$('select[type=dropdown]').val() === 'all' ? '' : $('select[type=dropdown]').val()}`
-
-// */
-// const newObj = Object.assign(oneObj, secondObj);
-
-// function grabInputValPairs() {
-// 	const addressVal = $('input[type=address]').val()
-//   const stateVal = $('input[type=state]').val()
-//   return { addressVal, stateVal }
-//   //makes an object with{ addressVal: "", stateVal: "" }
-// }
-
-// const inputObj = grabInputValPairs();
-// const completeRequestObj = Object.assign(reqConfigSettings, inputObj)
-// $.ajax(completeRequestObj)
-
-// //callback-based API
-// $.ajax(initialParams, function callback(data){
-// 	//do whatever data manipulation or rendering steps
-// });
-
-// const store = {
-// 	"venues": []
-// }
-
-// $.get(rootURL + "/v3/venues/", function (data){
-// 	let filteredDataset = data.venues.filter(venueObj =>
-//   	return venueObj.category == "hipster"
-//   )
-// 	filteredDataset.forEach(venue => {
-//   	store.venues.push(venue);
-//   });
-// 	redrawUI();
-
-// });
-
-// function redrawUI(){
-// 	$("some-label").value = store
-
 // }
