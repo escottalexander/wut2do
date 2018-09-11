@@ -74,6 +74,7 @@ $(event => {
     $('#submit').on('click', searchForResults);
     $('#locate').on('click', geoLocateUser);
     $('#results').on('click', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
+    $('.app').on('click', '.venue', (event) => $(event.currentTarget).find('.venueInfo').toggleClass('hidden'));
 });
 
 function geoLocateUser() {
@@ -132,20 +133,21 @@ function renderResponse(results) {
     for (let i = 0; i < listOfVenues.length; i++) {
         STORE.venues.push(listOfVenues[i]);
         let venueId = listOfVenues[i].id;
-        //console.log(venueId);
+        console.log(STORE.venues);
         let venueName = listOfVenues[i].name;
         $('#results').append(`<div class="venue" id=${venueId}><h3>${venueName}</h3><div class="venueInfo hidden"></div></div>`);
     }
 }
 
 function getVenueApiResponse(venueId) {
+    // add logic so that it deosnt load a second time
     STORE.currentVenueId = `https://api.foursquare.com/v2/venues/${venueId}`;
     settings.foursquareVenues.url = STORE.currentVenueId;
     $.ajax(settings.foursquareVenues);
 }
 
 function renderVenue(venueInfo) {
-    console.log(venueInfo);
+    //console.log(venueInfo);
     let id = venueInfo.response.venue.id;
     let venueDescription = venueInfo.response.venue.description ? venueInfo.response.venue.description : '';
     let addressArr = venueInfo.response.venue.location.formattedAddress; //array of 3
@@ -157,12 +159,12 @@ function renderVenue(venueInfo) {
     let url = venueInfo.response.venue.url ? venueInfo.response.venue.url : '';
     $(`#${id} > .venueInfo`).append(`
     <h4>${venueDescription}</h4>
-    ${ rating !== '' ? `<h3 class="rating">Rating: ${rating}</h3>` : ''}
+    ${ photoUrl !== '' ? `<img class="venueImg" src=${photoUrl} />` : ''}
+    ${ rating !== '' ? `<h3 class="rating">Rating: <span class="score">${rating}</span></h3>` : ''}
     <div class="address">${renderAddress(addressArr)}</div>
     <div class="contact">${phoneNumber}</div>
-    ${ photoUrl !== '' ? `<img class="venueImg" src=${photoUrl} />` : ''}
     ${ openCurrently !== '' ? openCurrently ? `<h4>Open Currently</h4>`: `<h4>Currently Closed</h4>` : ''}
-    ${ hoursArr !== '' ? `<ul class="hours"> ${renderHours(hoursArr)}</ul>`: ''}
+    ${ hoursArr !== '' ? `<div class="times"><h3>Hours:</h3><ul class="timesList">${renderHours(hoursArr)}</ul></div>`: ''}
     ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
     `);
 }
@@ -170,9 +172,9 @@ function renderVenue(venueInfo) {
 function renderHours(arr) {
     let hours = [];
     for (let i = 0; i < arr.length; i++) {
-        hours.push(`<li><p>${arr[i].days}</p>`);
+        hours.push(`<li><p class="day">${arr[i].days}</p>`);
         for (let h = 0; h < arr[i].open.length; h ++ ){
-            hours.push(`<p>${arr[i].open[h].renderedTime}</p>`);
+            hours.push(`<p class="hours">${arr[i].open[h].renderedTime}</p>`);
         }
         hours.push("</li>");
     }

@@ -1,7 +1,72 @@
-fieldset {
+* {
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    
+}
+#results {
+    width:100%;
+}
+.venue {
+    border: 5px solid black;
+    border-radius: 5px;
     padding: 10px;
-    border: solid blue 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: auto;
+}
+
+form {
+    padding: 10px;
+    border: solid teal 5px;
     border-radius: 10px;
+}
+
+fieldset {
+    border: none;
+}
+.hidden {
+    display: none;
+}
+.times {
+    clear: right;
+}
+.timesList {
+    clear: right;
+    display:flex;
+}
+.venue img {
+    float: right;
+    border-radius: 25px;
+    width:50%;
+    height:auto;
+}
+button[type='submit'] {
+margin-left: auto;
+margin-right:auto;
+display: block;
+background-color: teal;
+border-radius: 10px;
+padding:20px;
+color: white;
+font-style: bold;
+}
+li {
+    list-style: none;
+    border: 2px solid black;
+    padding: 2px;
+}
+.rating {
+margin: 3px;
+}
+.score {
+    border: 3px dotted orange;
+    border-radius: 100%;
+    padding: 3px;
+}
+.day {
+    font-weight: bold;
 }
 
 @media (min-width: 600px) {
