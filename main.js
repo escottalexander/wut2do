@@ -1,12 +1,11 @@
 //TODO
-// structure the individual venues
 // add error handling to venue api response, test by putting in wrong address
-// maps of venues locations
-// pictures of venue, websites, etc.
 // investigate zip code issues with geolocation
+// up/down arrow on .title element
+// GeoLocation button position and style
 
 const STORE = {
-    // mapId: 0,
+    mapId: 0,
     lat: 0,
     lon: 0,
     location: '',
@@ -53,7 +52,7 @@ const settings = {
         },
         dataType: 'jsonp',
         type: 'GET',
-        success: renderResponse
+        success: renderVenueTitles
     },
     foursquareVenues: {
         url: STORE.currentVenueId,
@@ -68,13 +67,12 @@ const settings = {
     }
 };
 
-// page load events and click events handling
 $(event => {
     getCategoriesApiResponse(pushCategories);
     $('#submit').on('click', searchForResults);
     $('#locate').on('click', geoLocateUser);
     $('#results').on('click', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
-    $('.app').on('click', '.venue', (event) => $(event.currentTarget).find('.venueInfo').toggleClass('hidden'));
+    $('#results').on('click', '.title', (event) => $(event.currentTarget.parentNode).find('.venueInfo').toggleClass('hidden'));
 });
 
 function geoLocateUser() {
@@ -126,28 +124,28 @@ function searchForResults() {
 }
 
 
-function renderResponse(results) {
-    //console.log(results);
+function renderVenueTitles(results) {
     let listOfVenues = results.response.venues;
     $('#results').empty();
     for (let i = 0; i < listOfVenues.length; i++) {
         STORE.venues.push(listOfVenues[i]);
         let venueId = listOfVenues[i].id;
-        console.log(STORE.venues);
         let venueName = listOfVenues[i].name;
-        $('#results').append(`<div class="venue" id=${venueId}><h3>${venueName}</h3><div class="venueInfo hidden"></div></div>`);
+        $('#results').append(`<div class="venue" id=${venueId} accessed="false"><h3 class="title">${venueName}</h3><div class="venueInfo hidden"></div></div>`);
     }
 }
 
 function getVenueApiResponse(venueId) {
-    // add logic so that it deosnt load a second time
+   if ($(`#${venueId}`).attr("accessed") === 'false') {
+    $(`#${venueId}`).attr('accessed','true');
     STORE.currentVenueId = `https://api.foursquare.com/v2/venues/${venueId}`;
     settings.foursquareVenues.url = STORE.currentVenueId;
     $.ajax(settings.foursquareVenues);
+   } 
 }
 
 function renderVenue(venueInfo) {
-    //console.log(venueInfo);
+    console.log(venueInfo);
     let id = venueInfo.response.venue.id;
     let venueDescription = venueInfo.response.venue.description ? venueInfo.response.venue.description : '';
     let addressArr = venueInfo.response.venue.location.formattedAddress; //array of 3
@@ -157,12 +155,16 @@ function renderVenue(venueInfo) {
     let hoursArr = venueInfo.response.venue.popular ? venueInfo.response.venue.popular.timeframes ? venueInfo.response.venue.popular.timeframes : '' : ''; //Array of 7 starting with today
     let rating = venueInfo.response.venue.rating ? venueInfo.response.venue.rating : ''; // 7.3
     let url = venueInfo.response.venue.url ? venueInfo.response.venue.url : '';
+    let latlon = `${venueInfo.response.venue.location.lat},${venueInfo.response.venue.location.lng}`;
+    let venueNameForMaps = venueInfo.response.venue.name.replace(/ /gi,'+');
+    console.log(venueNameForMaps);
     $(`#${id} > .venueInfo`).append(`
-    <h4>${venueDescription}</h4>
+    ${venueDescription !== '' ? `<h4>${venueDescription}</h4>` : ''}
     ${ photoUrl !== '' ? `<img class="venueImg" src=${photoUrl} />` : ''}
     ${ rating !== '' ? `<h3 class="rating">Rating: <span class="score">${rating}</span></h3>` : ''}
     <div class="address">${renderAddress(addressArr)}</div>
-    <div class="contact">${phoneNumber}</div>
+    ${renderMap(latlon, venueNameForMaps)}
+    ${phoneNumber !== '' ? `<div class="contact">${phoneNumber}</div>` : ''}
     ${ openCurrently !== '' ? openCurrently ? `<h4>Open Currently</h4>`: `<h4>Currently Closed</h4>` : ''}
     ${ hoursArr !== '' ? `<div class="times"><h3>Hours:</h3><ul class="timesList">${renderHours(hoursArr)}</ul></div>`: ''}
     ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
@@ -189,10 +191,10 @@ function renderAddress(arr) {
     return address.join('');
 }
 
-// function renderMap(lat, lon, venueName) {
-//     let mapId = STORE.mapId;
-//     STORE.mapId++;
-//     return `
-//     <div id="map_${mapId}"><img src='https://maps.googleapis.com/maps/api/staticmap?markers=color:blue%7C${lat},${lon}&zoom=18&size=400x400&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></div>
-//     `;
-// }
+function renderMap(latlon, venueNameForMaps) {
+    let mapId = STORE.mapId;
+    STORE.mapId++;
+    return `
+    <a href="https://www.google.com/maps/search/?api=1&query=${venueNameForMaps}" target="_blank"><img class="map" id="map_${mapId}" src='https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=18&size=350x350&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></a>
+    `;
+}
