@@ -92,12 +92,12 @@ function reverseGeoLocateApi(position) {
 }
 
 function showGeoLocatedAddress(response) {
-    let houseNum = response.results[0].address_components[0].short_name;
-    let roadName = response.results[0].address_components[1].short_name;
-    let cityName = response.results[0].address_components[2].short_name;
-    let stateName = response.results[0].address_components[5].short_name;
-    let zipCode = response.results[0].address_components[7].short_name;
-    $('input[type=address]').val(`${houseNum} ${roadName}`);
+    let formattedAddress = response.results[0].formatted_address.split(',');
+    let streetAddress = formattedAddress[0];
+    let cityName = formattedAddress[1].replace(/ /g, '');
+    let stateName = formattedAddress[2].split(' ')[1];
+    let zipCode = formattedAddress[2].split(' ')[2];
+    $('input[type=address]').val(streetAddress);
     $('input[type=city]').val(cityName);
     $('input[type=state]').val(stateName);
     $('input[type=zip]').val(zipCode);
@@ -136,12 +136,12 @@ function renderVenueTitles(results) {
 }
 
 function getVenueApiResponse(venueId) {
-   if ($(`#${venueId}`).attr("accessed") === 'false') {
-    $(`#${venueId}`).attr('accessed','true');
-    STORE.currentVenueId = `https://api.foursquare.com/v2/venues/${venueId}`;
-    settings.foursquareVenues.url = STORE.currentVenueId;
-    $.ajax(settings.foursquareVenues);
-   } 
+    if ($(`#${venueId}`).attr("accessed") === 'false') {
+        $(`#${venueId}`).attr('accessed', 'true');
+        STORE.currentVenueId = `https://api.foursquare.com/v2/venues/${venueId}`;
+        settings.foursquareVenues.url = STORE.currentVenueId;
+        $.ajax(settings.foursquareVenues);
+    }
 }
 
 function renderVenue(venueInfo) {
@@ -156,7 +156,7 @@ function renderVenue(venueInfo) {
     let rating = venueInfo.response.venue.rating ? venueInfo.response.venue.rating : ''; // 7.3
     let url = venueInfo.response.venue.url ? venueInfo.response.venue.url : '';
     let latlon = `${venueInfo.response.venue.location.lat},${venueInfo.response.venue.location.lng}`;
-    let venueNameForMaps = venueInfo.response.venue.name.replace(/ /gi,'+');
+    let venueNameForMaps = venueInfo.response.venue.name.replace(/ /gi, '+');
     console.log(venueNameForMaps);
     $(`#${id} > .venueInfo`).append(`
     ${venueDescription !== '' ? `<h4>${venueDescription}</h4>` : ''}
@@ -175,7 +175,7 @@ function renderHours(arr) {
     let hours = [];
     for (let i = 0; i < arr.length; i++) {
         hours.push(`<li><p class="day">${arr[i].days}</p>`);
-        for (let h = 0; h < arr[i].open.length; h ++ ){
+        for (let h = 0; h < arr[i].open.length; h++) {
             hours.push(`<p class="hours">${arr[i].open[h].renderedTime}</p>`);
         }
         hours.push("</li>");
