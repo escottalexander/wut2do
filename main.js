@@ -159,15 +159,19 @@ function renderVenue(venueInfo) {
     let venueNameForMaps = venueInfo.response.venue.name.replace(/ /gi, '+');
     console.log(venueNameForMaps);
     $(`#${id} > .venueInfo`).append(`
+    <div class="half-left">
     ${venueDescription !== '' ? `<h4>${venueDescription}</h4>` : ''}
-    ${ photoUrl !== '' ? `<img class="venueImg" src=${photoUrl} />` : ''}
     ${ rating !== '' ? `<h3 class="rating">Rating: <span class="score">${rating}</span></h3>` : ''}
     <div class="address">${renderAddress(addressArr)}</div>
-    ${renderMap(latlon, venueNameForMaps)}
     ${phoneNumber !== '' ? `<div class="contact">${phoneNumber}</div>` : ''}
+    ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
     ${ openCurrently !== '' ? openCurrently ? `<h4>Open Currently</h4>`: `<h4>Currently Closed</h4>` : ''}
     ${ hoursArr !== '' ? `<div class="times"><h3>Hours:</h3><ul class="timesList">${renderHours(hoursArr)}</ul></div>`: ''}
-    ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
+    </div>
+    <div class="half-right">
+    ${renderMap(latlon, venueNameForMaps)}
+    ${ photoUrl !== '' ? `<img class="venueImg" src=${photoUrl} />` : ''}
+    </div>
     `);
 }
 
