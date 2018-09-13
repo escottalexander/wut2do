@@ -171,7 +171,7 @@ h3 {
     height: 40px;
 }
 
-#locate:hover {
+#locate:hover, #locate:focus {
     animation: bounce 1s;
 }
 
@@ -187,7 +187,7 @@ h3 {
     height: 20px;
 }
 
-#arrow:hover {
+#arrow:hover, #arrow:focus {
     animation: bounce .75s;
 }
 .msg-handler {
@@ -213,8 +213,8 @@ h3 {
     width: 100%;
 }
 
-.venue-top:hover,
-button[type='submit']:hover {
+.venue-top:hover, .venue-top:focus,
+button[type='submit']:hover, button[type='submit']:focus {
     background-color: #95AFBA;
 }
 
@@ -285,7 +285,8 @@ button[type='submit'] {
     border-radius: 10px;
     padding: 20px;
     color: white;
-    font-style: bold;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 li {

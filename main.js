@@ -72,22 +72,25 @@ const settings = {
 $(event => {
     getCategoriesApiResponse(pushCategories);
     $('#submit').on('click', searchForResults);
-    $('#locate').on('click', geoLocateUser);
-    $('#results').on('mouseover', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
-    $('#results').on('click', '.venue-top', (event) => $(event.currentTarget.parentNode).find('.venueInfo').slideToggle());
+    $('#locate').on('click keypress', geoLocateUser);
+    $('#results').on('mouseover focus', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
+    $('#results').on('click keypress', '.venue-top', (event) => $(event.currentTarget.parentNode).find('.venueInfo').slideToggle());
 });
 
 function errorHandler(errorCode, errorType, errorDetail) {
-console.error(`Error Code: ${errorCode} Type: ${errorType} Description: ${errorDetail}`);
-$(".msg-handler").html(`
-<h3>Error code ${errorCode}</h3><h3>Type: ${errorType}</h3><h3>Description: ${errorDetail}</h3>
+    switch (errorCode) {
+        case 400:
+            console.error(`Error Code: ${errorCode} Type: ${errorType} Description: ${errorDetail}`);
+            $(".msg-handler").html(`
+<h3>Error code ${errorCode}</h3><h3>Please enter a valid address</h3>
 `).slideDown(500, () => $(".msg-handler").delay(4000).slideUp(500));
-
+            break;
+    }
 }
 
 function geoLocateUser() {
     event.preventDefault();
-        navigator.geolocation.getCurrentPosition(reverseGeoLocateApi);   
+    navigator.geolocation.getCurrentPosition(reverseGeoLocateApi);
 }
 
 function reverseGeoLocateApi(position) {
@@ -131,16 +134,16 @@ function searchForResults() {
 
 function renderVenueTitles(data) {
     if (data.meta.code !== 200) {
-errorHandler(data.meta.code, data.meta.errorType, data.meta.errorDetail);
+        errorHandler(data.meta.code, data.meta.errorType, data.meta.errorDetail);
     } else {
-    let listOfVenues = data.response.venues;
-    $('#results').empty();
-    for (let i = 0; i < listOfVenues.length; i++) {
-        STORE.venues.push(listOfVenues[i]);
-        let venueId = listOfVenues[i].id;
-        let venueName = listOfVenues[i].name;
-        $('#results').append(`<div class="venue" id=${venueId} accessed="false"><div class="venue-top"><h3 class="title">${venueName}<span id="arrow"></span></h3></div><div class="venueInfo hidden"></div></div>`);
-    }
+        let listOfVenues = data.response.venues;
+        $('#results').empty();
+        for (let i = 0; i < listOfVenues.length; i++) {
+            STORE.venues.push(listOfVenues[i]);
+            let venueId = listOfVenues[i].id;
+            let venueName = listOfVenues[i].name;
+            $('#results').append(`<div class="venue"  id=${venueId} accessed="false"><div class="venue-top" tabindex=0><h3 class="title">${venueName}<span id="arrow"></span></h3></div><div class="venueInfo hidden"></div></div>`);
+        }
     }
 }
 
