@@ -72,7 +72,7 @@ $(event => {
     $('#submit').on('click', searchForResults);
     $('#locate').on('click', geoLocateUser);
     $('#results').on('click', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
-    $('#results').on('click', '.title', (event) => $(event.currentTarget.parentNode).find('.venueInfo').toggleClass('hidden'));
+    $('#results').on('click', '.venue-top', (event) => $(event.currentTarget.parentNode).find('.venueInfo').toggleClass('hidden'));
 });
 
 function geoLocateUser() {
@@ -131,7 +131,7 @@ function renderVenueTitles(results) {
         STORE.venues.push(listOfVenues[i]);
         let venueId = listOfVenues[i].id;
         let venueName = listOfVenues[i].name;
-        $('#results').append(`<div class="venue" id=${venueId} accessed="false"><h3 class="title">${venueName}</h3><div class="venueInfo hidden"></div></div>`);
+        $('#results').append(`<div class="venue" id=${venueId} accessed="false"><div class="venue-top"><h3 class="title">${venueName}</h3></div><div class="venueInfo hidden"></div></div>`);
     }
 }
 

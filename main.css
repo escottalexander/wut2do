@@ -1,20 +1,20 @@
 * {
-    padding: 0px;
-    margin: 0px;
-}
-body {
-    
-}
+    box-sizing: border-box;
+  }
+
 #results {
     width:100%;
 }
 .venue {
     border: 5px solid black;
     border-radius: 5px;
-    padding: 10px;
     margin-top: 10px;
-    margin-bottom: 10px;
     overflow: auto;
+}
+.venue-top {
+    background-color:teal;
+    height: 100%;
+    width:100%;
 }
 
 form {
@@ -25,6 +25,15 @@ form {
 
 fieldset {
     border: none;
+}
+.title {
+    text-align: center;
+    width:100%;
+    height: auto;
+    background-color: teal;
+    color: white;
+    margin: 0px;
+    padding: 10px;
 }
 .half-left {
     float:left;
@@ -44,6 +53,7 @@ fieldset {
     clear: right;
     display:flex;
     flex-direction: column;
+    padding-left: 0px;
 }
 .venue img {
     float: right;
@@ -66,10 +76,16 @@ font-style: bold;
 }
 li {
     list-style: none;
-    border: 2px solid black;
+    border: 1px solid black;
+    border-radius: 5px;
     padding: 2px;
     float: left;
 }
+li p {
+    margin-top:2px;
+    margin-bottom: 2px;
+}
+
 .rating {
 margin: 3px;
 }
@@ -90,6 +106,7 @@ margin: 3px;
 
 li {
    margin:5px;
+   border: 2px solid black;
 }
 
 }
