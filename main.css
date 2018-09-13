@@ -139,12 +139,14 @@ body {
     background-image: url("images/mapbackground.jpg");
     background-size: 500px;
     background-repeat: repeat;
+    font-family: 'Fira Sans Condensed', sans-serif;
 }
 
 header {
     text-align: center;
     margin: 10px 0px 10px 0px;
     font-size: 60px;
+    font-family: "Permanent Marker", cursive;
     color: #FF702F;
     text-shadow:
         -2px -2px 0 #3F7CAC,
@@ -218,6 +220,12 @@ button[type='submit']:hover, button[type='submit']:focus {
     background-color: #95AFBA;
 }
 
+.currentStatus {
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 form {
     background-color: #FAB840;
     padding: 10px;
@@ -255,7 +263,7 @@ fieldset {
 }
 
 .address {
-    margin-top: 10px;
+    margin: 10px;
 }
 
 .times {
@@ -286,7 +294,8 @@ button[type='submit'] {
     padding: 20px;
     color: white;
     font-size: 16px;
-    font-weight: bold;
+    font-family: 'Fira Sans Condensed', sans-serif;
+    /* font-weight: bold; */
 }
 
 li {

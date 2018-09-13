@@ -175,7 +175,7 @@ function renderVenue(data) {
     <div class="address">${renderAddress(addressArr)}</div>
     ${phoneNumber !== '' ? `<div class="contact">${phoneNumber}</div>` : ''}
     ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
-    ${ openCurrently !== '' ? openCurrently ? `<h4>Open Currently</h4>`: `<h4>Currently Closed</h4>` : ''}
+    ${ openCurrently !== '' ? openCurrently ? `<h4 class="currentStatus">Open Currently</h4>`: `<h4 class="currentStatus">Currently Closed</h4>` : ''}
     ${ hoursArr !== '' ? `<div class="times"><h3>Hours:</h3><ul class="timesList">${renderHours(hoursArr)}</ul></div>`: ''}
     </div>
     <div class="half-right">
