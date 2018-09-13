@@ -1,8 +1,6 @@
 //TODO
 // add error handling to venue api response, test by putting in wrong address
-// investigate zip code issues with geolocation
-// up/down arrow on .title element
-// GeoLocation button position and style
+// validate address
 
 const STORE = {
     mapId: 0,
@@ -25,7 +23,8 @@ const settings = {
         },
         dataType: 'jsonp',
         type: 'GET',
-        success: pushCategories
+        success: pushCategories,
+        error: errorHandler
     },
     geoLocate: {
         url: 'https://maps.googleapis.com/maps/api/geocode/json',
@@ -35,7 +34,8 @@ const settings = {
         },
         dataType: 'json',
         type: 'GET',
-        success: showGeoLocatedAddress
+        success: showGeoLocatedAddress,
+        error: errorHandler
     },
     foursquareSearch: {
         url: 'https://api.foursquare.com/v2/venues/search',
@@ -52,7 +52,8 @@ const settings = {
         },
         dataType: 'jsonp',
         type: 'GET',
-        success: renderVenueTitles
+        success: renderVenueTitles,
+        error: errorHandler
     },
     foursquareVenues: {
         url: STORE.currentVenueId,
@@ -63,7 +64,8 @@ const settings = {
         },
         dataType: 'jsonp',
         type: 'GET',
-        success: renderVenue
+        success: renderVenue,
+        error: errorHandler
     }
 };
 
@@ -71,18 +73,21 @@ $(event => {
     getCategoriesApiResponse(pushCategories);
     $('#submit').on('click', searchForResults);
     $('#locate').on('click', geoLocateUser);
-    $('#results').on('click', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
-    $('#results').on('click', '.venue-top', (event) => $(event.currentTarget.parentNode).find('.venueInfo').toggleClass('hidden'));
+    $('#results').on('mouseover', '.venue', (event) => getVenueApiResponse(event.currentTarget.id));
+    $('#results').on('click', '.venue-top', (event) => $(event.currentTarget.parentNode).find('.venueInfo').slideToggle());
 });
+
+function errorHandler(errorCode, errorType, errorDetail) {
+console.error(`Error Code: ${errorCode} Type: ${errorType} Description: ${errorDetail}`);
+$(".msg-handler").html(`
+<h3>Error code ${errorCode}</h3><h3>Type: ${errorType}</h3><h3>Description: ${errorDetail}</h3>
+`).slideDown(500, () => $(".msg-handler").delay(4000).slideUp(500));
+
+}
 
 function geoLocateUser() {
     event.preventDefault();
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(reverseGeoLocateApi);
-    } else {
-        //TODO Add UI for this error
-        alert("Geolocation is not supported by this browser.");
-    }
+        navigator.geolocation.getCurrentPosition(reverseGeoLocateApi);   
 }
 
 function reverseGeoLocateApi(position) {
@@ -91,8 +96,8 @@ function reverseGeoLocateApi(position) {
     $.ajax(settings.geoLocate);
 }
 
-function showGeoLocatedAddress(response) {
-    let formattedAddress = response.results[0].formatted_address.split(',');
+function showGeoLocatedAddress(data) {
+    let formattedAddress = data.results[0].formatted_address.split(',');
     let streetAddress = formattedAddress[0];
     let cityName = formattedAddress[1].replace(/ /g, '');
     let stateName = formattedAddress[2].split(' ')[1];
@@ -107,10 +112,10 @@ function getCategoriesApiResponse() {
     $.ajax(settings.categories);
 }
 
-function pushCategories(results) {
-    for (let i = 0; i < results.response.categories.length; i++) {
-        let categoryName = results.response.categories[i].name;
-        let categoryId = results.response.categories[i].id;
+function pushCategories(data) {
+    for (let i = 0; i < data.response.categories.length; i++) {
+        let categoryName = data.response.categories[i].name;
+        let categoryId = data.response.categories[i].id;
         $('#categories').append(`<option value=${categoryId}>${categoryName}</option>`);
     }
 }
@@ -124,14 +129,18 @@ function searchForResults() {
 }
 
 
-function renderVenueTitles(results) {
-    let listOfVenues = results.response.venues;
+function renderVenueTitles(data) {
+    if (data.meta.code !== 200) {
+errorHandler(data.meta.code, data.meta.errorType, data.meta.errorDetail);
+    } else {
+    let listOfVenues = data.response.venues;
     $('#results').empty();
     for (let i = 0; i < listOfVenues.length; i++) {
         STORE.venues.push(listOfVenues[i]);
         let venueId = listOfVenues[i].id;
         let venueName = listOfVenues[i].name;
-        $('#results').append(`<div class="venue" id=${venueId} accessed="false"><div class="venue-top"><h3 class="title">${venueName}</h3></div><div class="venueInfo hidden"></div></div>`);
+        $('#results').append(`<div class="venue" id=${venueId} accessed="false"><div class="venue-top"><h3 class="title">${venueName}<span id="arrow"></span></h3></div><div class="venueInfo hidden"></div></div>`);
+    }
     }
 }
 
@@ -144,24 +153,22 @@ function getVenueApiResponse(venueId) {
     }
 }
 
-function renderVenue(venueInfo) {
-    console.log(venueInfo);
-    let id = venueInfo.response.venue.id;
-    let venueDescription = venueInfo.response.venue.description ? venueInfo.response.venue.description : '';
-    let addressArr = venueInfo.response.venue.location.formattedAddress; //array of 3
-    let photoUrl = venueInfo.response.venue.bestPhoto ? `${venueInfo.response.venue.bestPhoto.prefix}300x300${venueInfo.response.venue.bestPhoto.suffix}` : '';
-    let phoneNumber = venueInfo.response.venue.contact.formattedPhone ? venueInfo.response.venue.contact.formattedPhone : '';
-    let openCurrently = venueInfo.response.venue.popular ? venueInfo.response.venue.popular.isOpen ? venueInfo.response.venue.popular.isOpen : '' : ''; //boolean
-    let hoursArr = venueInfo.response.venue.popular ? venueInfo.response.venue.popular.timeframes ? venueInfo.response.venue.popular.timeframes : '' : ''; //Array of 7 starting with today
-    let rating = venueInfo.response.venue.rating ? venueInfo.response.venue.rating : ''; // 7.3
-    let url = venueInfo.response.venue.url ? venueInfo.response.venue.url : '';
-    let latlon = `${venueInfo.response.venue.location.lat},${venueInfo.response.venue.location.lng}`;
-    let venueNameForMaps = venueInfo.response.venue.name.replace(/ /gi, '+');
-    console.log(venueNameForMaps);
+function renderVenue(data) {
+    let id = data.response.venue.id;
+    let venueDescription = data.response.venue.description ? data.response.venue.description : '';
+    let addressArr = data.response.venue.location.formattedAddress; //array of 3
+    let photoUrl = data.response.venue.bestPhoto ? `${data.response.venue.bestPhoto.prefix}300x300${data.response.venue.bestPhoto.suffix}` : '';
+    let phoneNumber = data.response.venue.contact.formattedPhone ? data.response.venue.contact.formattedPhone : '';
+    let openCurrently = data.response.venue.popular ? data.response.venue.popular.isOpen ? data.response.venue.popular.isOpen : '' : ''; //boolean
+    let hoursArr = data.response.venue.popular ? data.response.venue.popular.timeframes ? data.response.venue.popular.timeframes : '' : ''; //Array of 7 starting with today
+    let rating = data.response.venue.rating ? data.response.venue.rating : ''; // 7.3
+    let url = data.response.venue.url ? data.response.venue.url : '';
+    let latlon = `${data.response.venue.location.lat},${data.response.venue.location.lng}`;
+    let venueNameForMaps = data.response.venue.name.replace(/ /gi, '+');
     $(`#${id} > .venueInfo`).append(`
     <div class="half-left">
-    ${venueDescription !== '' ? `<h4>${venueDescription}</h4>` : ''}
     ${ rating !== '' ? `<h3 class="rating">Rating: <span class="score">${rating}</span></h3>` : ''}
+    ${venueDescription !== '' ? `<h4>${venueDescription}</h4>` : ''}
     <div class="address">${renderAddress(addressArr)}</div>
     ${phoneNumber !== '' ? `<div class="contact">${phoneNumber}</div>` : ''}
     ${ url !== '' ? `<a href=${url}>Website</a>` : ''}

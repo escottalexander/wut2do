@@ -1,99 +1,317 @@
 * {
     box-sizing: border-box;
-  }
+}
+
+/* css reset */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* end css reset */
+body {
+    background-image: url("images/mapbackground.jpg");
+    background-size: 500px;
+    background-repeat: repeat;
+}
+
+header {
+    text-align: center;
+    margin: 10px 0px 10px 0px;
+    font-size: 60px;
+    color: #FF702F;
+    text-shadow:
+        -2px -2px 0 #3F7CAC,
+        0 -2px 0 #3F7CAC,
+        2px -2px 0 #3F7CAC,
+        2px 0 0 #3F7CAC,
+        2px 2px 0 #3F7CAC,
+        0 2px 0 #3F7CAC,
+        -2px 2px 0 #3F7CAC,
+        -2px 0 0 #3F7CAC;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 5px;
+}
+
+#locate {
+    background: url(images/geolocate.svg) no-repeat;
+    background-size: 100%;
+    float: right;
+    width: 40px;
+    height: 40px;
+}
+
+#locate:hover {
+    animation: bounce 1s;
+}
 
 #results {
-    width:100%;
+    width: 100%;
+}
+
+#arrow {
+    background: url(images/arrow.svg) no-repeat;
+    background-position: center;
+    float: right;
+    width: 40px;
+    height: 20px;
+}
+
+#arrow:hover {
+    animation: bounce .75s;
+}
+.msg-handler {
+    
+    margin: 10px 0;
+    position: static;
+    text-align: center;
+    background-color: #EEECEF;
+    color: red;
+    border: 5px solid #3F7CAC;
 }
 .venue {
-    border: 5px solid black;
+    border: 5px solid #3F7CAC;
     border-radius: 5px;
     margin-top: 10px;
     overflow: auto;
+    background-color: #EEECEF;
 }
+
 .venue-top {
-    background-color:teal;
+    background-color: #3F7CAC;
     height: 100%;
-    width:100%;
+    width: 100%;
+}
+
+.venue-top:hover,
+button[type='submit']:hover {
+    background-color: #95AFBA;
 }
 
 form {
+    background-color: #FAB840;
     padding: 10px;
-    border: solid teal 5px;
+    border: solid #3F7CAC 5px;
     border-radius: 10px;
 }
 
 fieldset {
     border: none;
 }
+
 .title {
     text-align: center;
-    width:100%;
+    width: 100%;
     height: auto;
-    background-color: teal;
     color: white;
     margin: 0px;
     padding: 10px;
 }
-.half-left {
-    float:left;
-    width: 50%;
+
+.venueInfo {
+    margin-top: 10px;
 }
+
+.half-left,
 .half-right {
-    float:left;
-    width: 50%;
+    float: none;
+    width: 100%;
 }
+
+
 .hidden {
     display: none;
+
 }
+
+.address {
+    margin-top: 10px;
+}
+
 .times {
     clear: right;
 }
+
 .timesList {
     clear: right;
-    display:flex;
+    display: flex;
     flex-direction: column;
     padding-left: 0px;
 }
+
 .venue img {
     float: right;
-    border: rgb(65, 63, 63);
+    border: 5px solid #FAB840;
     border-radius: 25px;
-    width:100%;
-    height:auto;
-    margin-top: auto;
-    margin-bottom: auto;
+    width: 100%;
 }
+
 button[type='submit'] {
-margin-left: auto;
-margin-right:auto;
-display: block;
-background-color: teal;
-border-radius: 10px;
-padding:20px;
-color: white;
-font-style: bold;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    background-color: #3F7CAC;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    font-style: bold;
 }
+
 li {
     list-style: none;
-    border: 1px solid black;
+    border: 1px solid #011936;
     border-radius: 5px;
     padding: 2px;
     float: left;
+    background-color: #95AFBA;
 }
+
 li p {
-    margin-top:2px;
+    margin-top: 2px;
     margin-bottom: 2px;
 }
 
 .rating {
-margin: 3px;
+    margin: 3px;
 }
+
 .score {
     border: 3px dotted orange;
     border-radius: 100%;
     padding: 3px;
 }
+
 .day {
     font-weight: bold;
 }
@@ -101,24 +319,53 @@ margin: 3px;
 @media (min-width: 600px) {
 
     body {
-    margin: 10%;
+        margin: 10%;
+    }
+
+    header {
+        margin: 40px 0px 40px 0px;
+        font-size: 90px;
+    }
+
+    li {
+        margin: 5px;
+        border: 2px solid #011936;
+    }
+
+    .half-left,
+    .half-right {
+
+        float: left;
+        width: 50%;
+    }
+
+    .venue img {
+        margin-bottom: 20px;
+
+    }
 }
 
-li {
-   margin:5px;
-   border: 2px solid black;
-}
+@media (min-width: 900px) {}
 
-}
+@media (min-width: 1200px) {}
 
-@media (min-width: 900px) {
+@keyframes bounce {
 
-    
+    0%,
+    20%,
+    60%,
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
 
-}
+    40% {
+        -webkit-transform: translateY(-15px);
+        transform: translateY(-15px);
+    }
 
-@media (min-width: 1200px) {
-
-    
-
+    80% {
+        -webkit-transform: translateY(-10px);
+        transform: translateY(-10px);
+    }
 }

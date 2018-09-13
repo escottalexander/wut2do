@@ -15,15 +15,17 @@
         <h1>Wut 2 Do</h1>
     </header>
     <main role="main" class="app">
+        <div class="msg-handler hidden"></div>
         <form>
             <fieldset>
                 <legend>Location Information</legend>
-                <input type="address" name="address" id="address" placeholder="Address">
-                <input type="city" name="city" id="city" placeholder="City">
-                <input type="state" name="state" id="state" placeholder="State">
-                <input type="zip" name="zip" id="zip" placeholder="Zip Code">
-                <button type="locate" name="locate" id="locate">Locate Me</button>
-                
+                <span type="locate" name="locate" id="locate"></span>
+                <input type="address" name="address" id="address" placeholder="Address" required>
+                <input type="city" name="city" id="city" placeholder="City" required>
+                <input type="state" name="state" id="state" placeholder="State" required>
+                <input type="zip" name="zip" id="zip" placeholder="Zip Code" required>
+
+
             </fieldset>
             <fieldset>
                 <legend>Preferences</legend>
@@ -38,7 +40,8 @@
 
         </section>
     </main>
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
     <script src="main.js"></script>
 </body>
 
