@@ -173,7 +173,8 @@ h3 {
     height: 40px;
 }
 
-#locate:hover, #locate:focus {
+#locate:hover,
+#locate:focus {
     animation: bounce 1s;
 }
 
@@ -189,11 +190,13 @@ h3 {
     height: 20px;
 }
 
-#arrow:hover, #arrow:focus {
+#arrow:hover,
+#arrow:focus {
     animation: bounce .75s;
 }
+
 .msg-handler {
-    
+
     margin: 10px 0;
     position: static;
     text-align: center;
@@ -201,6 +204,7 @@ h3 {
     color: red;
     border: 5px solid #3F7CAC;
 }
+
 .venue {
     border: 5px solid #3F7CAC;
     border-radius: 5px;
@@ -215,8 +219,10 @@ h3 {
     width: 100%;
 }
 
-.venue-top:hover, .venue-top:focus,
-button[type='submit']:hover, button[type='submit']:focus {
+.venue-top:hover,
+.venue-top:focus,
+button[type='submit']:hover,
+button[type='submit']:focus {
     background-color: #95AFBA;
 }
 
