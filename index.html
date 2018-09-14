@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <header>
+    <header role="banner">
         <h1>Wut 2 Do</h1>
     </header>
     <main role="main" class="app">
@@ -20,21 +20,21 @@
             <fieldset>
                 <legend>Location Information</legend>
                 <span type="locate" tabindex=0 name="locate" id="locate"></span>
-                <input type="address" name="address" id="address" placeholder="Address" required>
-                <input type="city" name="city" id="city" placeholder="City" required>
-                <input type="state" name="state" id="state" placeholder="State" required>
-                <input type="zip" name="zip" id="zip" placeholder="Zip Code" required>
+                <input type="address" name="address" id="address" placeholder="Street Address" aria-label="Street Address" required>
+                <input type="city" name="city" id="city" placeholder="City" aria-label="City" required>
+                <input type="state" name="state" id="state" placeholder="State" aria-label="State" required>
+                <input type="zip" name="zip" id="zip" placeholder="Zip Code" aria-label="Zip Code" required>
             </fieldset>
             <fieldset>
                 <legend>Preferences</legend>
-                <input type="search" placeholder="Optional Search">
-                <select name="categories" type="dropdown" id="categories">
+                <input type="search" placeholder="Optional Search" aria-label="Search Query">
+                <select name="categories" type="dropdown" id="categories" aria-label="Select Category">
                     <option value="">All Categories</option>
                 </select>
             </fieldset>
             <button type="submit" name="submit" id="submit">Submit</button>
         </form>
-        <section id="results">
+        <section role="region" id="results">
 
         </section>
     </main>

@@ -149,19 +149,25 @@ header {
     font-family: "Permanent Marker", cursive;
     color: #FF702F;
     text-shadow:
-        -2px -2px 0 #3F7CAC,
-        0 -2px 0 #3F7CAC,
-        2px -2px 0 #3F7CAC,
-        2px 0 0 #3F7CAC,
-        2px 2px 0 #3F7CAC,
-        0 2px 0 #3F7CAC,
-        -2px 2px 0 #3F7CAC,
-        -2px 0 0 #3F7CAC;
+        -2px -2px 0 #326892,
+        0 -2px 0 #326892,
+        2px -2px 0 #326892,
+        2px 0 0 #326892,
+        2px 2px 0 #326892,
+        0 2px 0 #326892,
+        -2px 2px 0 #326892,
+        -2px 0 0 #326892;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 5px;
 }
 
 h3 {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     margin: 5px;
 }
 
@@ -182,7 +188,7 @@ h3 {
     width: 100%;
 }
 
-#arrow {
+.arrow {
     background: url(images/arrow.svg) no-repeat;
     background-position: center;
     float: right;
@@ -190,8 +196,8 @@ h3 {
     height: 20px;
 }
 
-#arrow:hover,
-#arrow:focus {
+.arrow:hover,
+.arrow:focus {
     animation: bounce .75s;
 }
 
@@ -202,11 +208,11 @@ h3 {
     text-align: center;
     background-color: #EEECEF;
     color: red;
-    border: 5px solid #3F7CAC;
+    border: 5px solid #326892;
 }
 
 .venue {
-    border: 5px solid #3F7CAC;
+    border: 5px solid #326892;
     border-radius: 5px;
     margin-top: 10px;
     overflow: auto;
@@ -214,7 +220,7 @@ h3 {
 }
 
 .venue-top {
-    background-color: #3F7CAC;
+    background-color: #326892;
     height: 100%;
     width: 100%;
 }
@@ -235,7 +241,7 @@ button[type='submit']:focus {
 form {
     background-color: #FAB840;
     padding: 10px;
-    border: solid #3F7CAC 5px;
+    border: solid #326892 5px;
     border-radius: 10px;
 }
 
@@ -294,12 +300,13 @@ button[type='submit'] {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    background-color: #3F7CAC;
+    background-color: #326892;
     border: none;
     border-radius: 10px;
     padding: 20px;
     color: white;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     font-family: 'Fira Sans Condensed', sans-serif;
     /* font-weight: bold; */
 }

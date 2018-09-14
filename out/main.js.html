@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * This is where all of the variables that need to be globally available are stored.
  */
 const STORE = {
@@ -91,7 +119,7 @@ function errorHandler(errorCode, errorType, errorDetail) {
         case 400:
             console.error(`Error Code: ${errorCode} Type: ${errorType} Description: ${errorDetail}`);
             $(".msg-handler").html(`
-<h2>Error code ${errorCode}</h2><h2>Please enter a valid address</h2>
+&lt;h2>Error code ${errorCode}&lt;/h2>&lt;h2>Please enter a valid address&lt;/h2>
 `).slideDown(500, () => $(".msg-handler").delay(4000).slideUp(500));
             break;
     }
@@ -138,10 +166,10 @@ function getCategoriesApiResponse() {
  * @param {requestCallback} data 
  */
 function pushCategories(data) {
-    for (let i = 0; i < data.response.categories.length; i++) {
+    for (let i = 0; i &lt; data.response.categories.length; i++) {
         let categoryName = data.response.categories[i].name;
         let categoryId = data.response.categories[i].id;
-        $('#categories').append(`<option value=${categoryId}>${categoryName}</option>`);
+        $('#categories').append(`&lt;option value=${categoryId}>${categoryName}&lt;/option>`);
     }
 }
 /**
@@ -165,11 +193,11 @@ function renderVenueTitles(data) {
     } else {
         let listOfVenues = data.response.venues;
         $('#results').empty();
-        for (let i = 0; i < listOfVenues.length; i++) {
+        for (let i = 0; i &lt; listOfVenues.length; i++) {
             STORE.venues.push(listOfVenues[i]);
             let venueId = listOfVenues[i].id;
             let venueName = listOfVenues[i].name;
-            $('#results').append(`<div class="venue"  id=${venueId} accessed="false"><div class="venue-top" tabindex=0><h2 class="title">${venueName}<span class="arrow"></span></h2></div><div class="venueInfo hidden"></div></div>`);
+            $('#results').append(`&lt;div class="venue"  id=${venueId} accessed="false">&lt;div class="venue-top" tabindex=0>&lt;h2 class="title">${venueName}&lt;span class="arrow">&lt;/span>&lt;/h2>&lt;/div>&lt;div class="venueInfo hidden">&lt;/div>&lt;/div>`);
         }
     }
 }
@@ -202,33 +230,33 @@ function renderVenue(data) {
     let latlon = `${data.response.venue.location.lat},${data.response.venue.location.lng}`;
     let venueNameForMaps = data.response.venue.name.replace(/ /gi, '+');
     $(`#${id} > .venueInfo`).append(`
-    <div class="half-left">
-    ${ rating !== '' ? `<h3 class="rating">Rating: <span class="score">${rating}</span></h3>` : ''}
-    ${venueDescription !== '' ? `<h4>${venueDescription}</h4>` : ''}
-    <div class="address">${renderAddress(addressArr)}</div>
-    ${phoneNumber !== '' ? `<div class="contact">${phoneNumber}</div>` : ''}
-    ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
-    ${ openCurrently !== '' ? openCurrently ? `<h4 class="currentStatus">Open Currently</h4>`: `<h4 class="currentStatus">Currently Closed</h4>` : ''}
-    ${ hoursArr !== '' ? `<div class="times"><h3>Hours:</h3><ul class="timesList">${renderHours(hoursArr)}</ul></div>`: ''}
-    </div>
-    <div class="half-right">
+    &lt;div class="half-left">
+    ${ rating !== '' ? `&lt;h3 class="rating">Rating: &lt;span class="score">${rating}&lt;/span>&lt;/h3>` : ''}
+    ${venueDescription !== '' ? `&lt;h4>${venueDescription}&lt;/h4>` : ''}
+    &lt;div class="address">${renderAddress(addressArr)}&lt;/div>
+    ${phoneNumber !== '' ? `&lt;div class="contact">${phoneNumber}&lt;/div>` : ''}
+    ${ url !== '' ? `&lt;a href=${url}>Website&lt;/a>` : ''}
+    ${ openCurrently !== '' ? openCurrently ? `&lt;h4 class="currentStatus">Open Currently&lt;/h4>`: `&lt;h4 class="currentStatus">Currently Closed&lt;/h4>` : ''}
+    ${ hoursArr !== '' ? `&lt;div class="times">&lt;h3>Hours:&lt;/h3>&lt;ul class="timesList">${renderHours(hoursArr)}&lt;/ul>&lt;/div>`: ''}
+    &lt;/div>
+    &lt;div class="half-right">
     ${renderMap(latlon, venueNameForMaps)}
-    ${ photoUrl !== '' ? `<img class="venueImg" src=${photoUrl} alt="Best user submitted image of the venue" />` : ''}
-    </div>
+    ${ photoUrl !== '' ? `&lt;img class="venueImg" src=${photoUrl} alt="Best user submitted image of the venue" />` : ''}
+    &lt;/div>
     `);
 }
 /**
- * This helper function recives an array of hour information for a specific venue and returns several <li> element for the different day's hours
+ * This helper function recives an array of hour information for a specific venue and returns several &lt;li> element for the different day's hours
  * @param {array} arr 
  */
 function renderHours(arr) {
     let hours = [];
-    for (let i = 0; i < arr.length; i++) {
-        hours.push(`<li><p class="day">${arr[i].days}</p>`);
-        for (let h = 0; h < arr[i].open.length; h++) {
-            hours.push(`<p class="hours">${arr[i].open[h].renderedTime}</p>`);
+    for (let i = 0; i &lt; arr.length; i++) {
+        hours.push(`&lt;li>&lt;p class="day">${arr[i].days}&lt;/p>`);
+        for (let h = 0; h &lt; arr[i].open.length; h++) {
+            hours.push(`&lt;p class="hours">${arr[i].open[h].renderedTime}&lt;/p>`);
         }
-        hours.push("</li>");
+        hours.push("&lt;/li>");
     }
     return hours.join('');
 }
@@ -238,8 +266,8 @@ function renderHours(arr) {
  */
 function renderAddress(arr) {
     let address = [];
-    for (let i = 0; i < arr.length; i++) {
-        address.push(`<p>${arr[i]}</p>`);
+    for (let i = 0; i &lt; arr.length; i++) {
+        address.push(`&lt;p>${arr[i]}&lt;/p>`);
     }
     return address.join('');
 }
@@ -252,6 +280,28 @@ function renderMap(latlon, venueNameForMaps) {
     let mapId = STORE.mapId;
     STORE.mapId++;
     return `
-    <a href="https://www.google.com/maps/search/?api=1&query=${venueNameForMaps}" target="_blank"><img class="map" id="map_${mapId}" alt="A map of the current venue's location" src='https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=18&size=350x350&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></a>
+    &lt;a href="https://www.google.com/maps/search/?api=1&amp;query=${venueNameForMaps}" target="_blank">&lt;img class="map" id="map_${mapId}" alt="A map of the current venue's location" src='https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&amp;zoom=18&amp;size=350x350&amp;key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/>&lt;/a>
     `;
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#errorHandler">errorHandler</a></li><li><a href="global.html#geoLocateUser">geoLocateUser</a></li><li><a href="global.html#getCategoriesApiResponse">getCategoriesApiResponse</a></li><li><a href="global.html#getVenueApiResponse">getVenueApiResponse</a></li><li><a href="global.html#pushCategories">pushCategories</a></li><li><a href="global.html#renderAddress">renderAddress</a></li><li><a href="global.html#renderHours">renderHours</a></li><li><a href="global.html#renderMap">renderMap</a></li><li><a href="global.html#renderVenue">renderVenue</a></li><li><a href="global.html#renderVenueTitles">renderVenueTitles</a></li><li><a href="global.html#reverseGeoLocateApi">reverseGeoLocateApi</a></li><li><a href="global.html#searchForResults">searchForResults</a></li><li><a href="global.html#settings">settings</a></li><li><a href="global.html#showGeoLocatedAddress">showGeoLocatedAddress</a></li><li><a href="global.html#STORE">STORE</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Sep 14 2018 12:47:17 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
