@@ -15,7 +15,7 @@
         <h1>Wut 2 Do</h1>
     </header>
     <main role="main" class="app">
-        <div class="msg-handler hidden"></div>
+        <div class="msg-handler hidden" aria-live="assertive"></div>
         <form>
             <fieldset>
                 <legend>Location Information</legend>
@@ -34,7 +34,7 @@
             </fieldset>
             <button type="submit" name="submit" id="submit">Submit</button>
         </form>
-        <section role="region" id="results">
+        <section role="region" id="results" aria-live="assertive">
 
         </section>
     </main>

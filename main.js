@@ -86,13 +86,17 @@ $(event => {
  * @param {string} errorType 
  * @param {string} errorDetail 
  */
-function errorHandler(errorCode, errorType, errorDetail) {
+function errorHandler(errorCode) {
     switch (errorCode) {
         case 400:
-            console.error(`Error Code: ${errorCode} Type: ${errorType} Description: ${errorDetail}`);
             $(".msg-handler").html(`
-<h2>Error code ${errorCode}</h2><h2>Please enter a valid address</h2>
-`).slideDown(500, () => $(".msg-handler").delay(4000).slideUp(500));
+<h2>Please enter a valid address</h2>
+`).slideDown(500, () => $(".msg-handler").delay(6000).slideUp(500));
+            break;
+        case 200:
+            $(".msg-handler").html(`
+<h2>No results for that search. Try a different search query or location</h2>
+`).slideDown(500, () => $(".msg-handler").delay(6000).slideUp(500));
             break;
     }
 }
@@ -160,8 +164,8 @@ function searchForResults() {
  * @param {requestCallback} data 
  */
 function renderVenueTitles(data) {
-    if (data.meta.code !== 200) {
-        errorHandler(data.meta.code, data.meta.errorType, data.meta.errorDetail);
+    if (data.meta.code !== 200 || data.response.venues.length === 0) {
+        errorHandler(data.meta.code);
     } else {
         let listOfVenues = data.response.venues;
         $('#results').empty();
@@ -169,7 +173,7 @@ function renderVenueTitles(data) {
             STORE.venues.push(listOfVenues[i]);
             let venueId = listOfVenues[i].id;
             let venueName = listOfVenues[i].name;
-            $('#results').append(`<div class="venue"  id=${venueId} accessed="false"><div class="venue-top" tabindex=0><h2 class="title">${venueName}<span class="arrow"></span></h2></div><div class="venueInfo hidden"></div></div>`);
+            $('#results').append(`<div class="venue"  id=${venueId} accessed="false" aria-live="assertive"><div class="venue-top" tabindex=0><h2 class="title">${venueName}<span class="arrow"></span></h2></div><div class="venueInfo hidden"></div></div>`);
         }
     }
 }
@@ -218,7 +222,7 @@ function renderVenue(data) {
     `);
 }
 /**
- * This helper function recives an array of hour information for a specific venue and returns several <li> element for the different day's hours
+ * This helper function recives an array of hour information for a specific venue and returns several <li> element for each day's hours
  * @param {array} arr 
  */
 function renderHours(arr) {
