@@ -1,7 +1,6 @@
-//TODO
-// add error handling to venue api response, test by putting in wrong address
-// validate address
-
+/**
+ * This is where all of the variables that need to be globally available are stored.
+ */
 const STORE = {
     mapId: 0,
     lat: 0,
@@ -12,7 +11,9 @@ const STORE = {
     currentVenueId: '',
     venues: []
 };
-
+/**
+ * This object is where we have stored all of the settings for the various API calls. It is acknowledged that the API keys are exposed here, but not to worry, as they are solely for this sample project.
+ */
 const settings = {
     categories: {
         url: 'https://api.foursquare.com/v2/venues/categories',
@@ -68,7 +69,9 @@ const settings = {
         error: errorHandler
     }
 };
-
+/**
+ * Event handling on page load is done here. It watches for clicks, focuses, and keypresses on various elements on the page.
+ */
 $(event => {
     getCategoriesApiResponse(pushCategories);
     $('#submit').on('click', searchForResults);
@@ -77,6 +80,12 @@ $(event => {
     $('#results').on('click keypress', '.venue-top', (event) => $(event.currentTarget.parentNode).find('.venueInfo').slideToggle());
 });
 
+/**
+ * This function is called whenever error handling needs to occur. It sorts the potential errors by the error code and then prints a user sensitive message about the error 
+ * @param {number} errorCode 
+ * @param {string} errorType 
+ * @param {string} errorDetail 
+ */
 function errorHandler(errorCode, errorType, errorDetail) {
     switch (errorCode) {
         case 400:
@@ -87,18 +96,26 @@ function errorHandler(errorCode, errorType, errorDetail) {
             break;
     }
 }
-
+/**
+ * A function for geolocating the user utilizing the built in HTML5 geolocator
+ */
 function geoLocateUser() {
     event.preventDefault();
     navigator.geolocation.getCurrentPosition(reverseGeoLocateApi);
 }
-
+/**
+ * This function takes the latitude and logitude coordinates and asks a Google reverse geolocation API to return the address
+ * @param {requestCallback} position 
+ */
 function reverseGeoLocateApi(position) {
     STORE.lat = position.coords.latitude;
     STORE.lon = position.coords.longitude;
     $.ajax(settings.geoLocate);
 }
-
+/**
+ * This function takes the data returned by the Google reverse geolocation API and puts it in the user inputs inside the form element
+ * @param {requestCallback} data 
+ */
 function showGeoLocatedAddress(data) {
     let formattedAddress = data.results[0].formatted_address.split(',');
     let streetAddress = formattedAddress[0];
@@ -110,11 +127,16 @@ function showGeoLocatedAddress(data) {
     $('input[type=state]').val(stateName);
     $('input[type=zip]').val(zipCode);
 }
-
+/**
+ * this function interfaces with a FourSquare API that return a list of categories that the user can select to narrow their search
+ */
 function getCategoriesApiResponse() {
     $.ajax(settings.categories);
 }
-
+/**
+ * This function takes the categories that are returned by FourSquare and appends them to the category selection input
+ * @param {requestCallback} data 
+ */
 function pushCategories(data) {
     for (let i = 0; i < data.response.categories.length; i++) {
         let categoryName = data.response.categories[i].name;
@@ -122,7 +144,9 @@ function pushCategories(data) {
         $('#categories').append(`<option value=${categoryId}>${categoryName}</option>`);
     }
 }
-
+/**
+ * On form submit, this function runs, requesting a list of venues defined by the users search queries and location
+ */
 function searchForResults() {
     event.preventDefault();
     STORE.location = `${$('input[type=address]').val()},${$('input[type=city]').val()},${$('input[type=state]').val()},${$('input[type=zip]').val()}`;
@@ -131,7 +155,10 @@ function searchForResults() {
     $.ajax(settings.foursquareSearch);
 }
 
-
+/**
+ * This function takes the API response and appends the venue titles to the page
+ * @param {requestCallback} data 
+ */
 function renderVenueTitles(data) {
     if (data.meta.code !== 200) {
         errorHandler(data.meta.code, data.meta.errorType, data.meta.errorDetail);
@@ -146,7 +173,10 @@ function renderVenueTitles(data) {
         }
     }
 }
-
+/**
+ * This function requests the individual venues details
+ * @param {specific id corresponding to a particular venue} venueId 
+ */
 function getVenueApiResponse(venueId) {
     if ($(`#${venueId}`).attr("accessed") === 'false') {
         $(`#${venueId}`).attr('accessed', 'true');
@@ -155,7 +185,10 @@ function getVenueApiResponse(venueId) {
         $.ajax(settings.foursquareVenues);
     }
 }
-
+/**
+ * This function renders the specific venues details to the page so the user can view them
+ * @param {requestCallback} data 
+ */
 function renderVenue(data) {
     let id = data.response.venue.id;
     let venueDescription = data.response.venue.description ? data.response.venue.description : '';
@@ -184,7 +217,10 @@ function renderVenue(data) {
     </div>
     `);
 }
-
+/**
+ * This helper function recives an array of hour information for a specific venue and returns several <li> element for the different day's hours
+ * @param {array} arr 
+ */
 function renderHours(arr) {
     let hours = [];
     for (let i = 0; i < arr.length; i++) {
@@ -196,7 +232,10 @@ function renderHours(arr) {
     }
     return hours.join('');
 }
-
+/**
+ * This helper function takes an array of address components and returns a typically rendered address
+ * @param {array} arr 
+ */
 function renderAddress(arr) {
     let address = [];
     for (let i = 0; i < arr.length; i++) {
@@ -204,7 +243,11 @@ function renderAddress(arr) {
     }
     return address.join('');
 }
-
+/**
+ * This function takes coordinates and generates an image of a map thanks to the Google static map API
+ * @param {coordinates seperated by comma} latlon 
+ * @param {string} venueNameForMaps 
+ */
 function renderMap(latlon, venueNameForMaps) {
     let mapId = STORE.mapId;
     STORE.mapId++;
