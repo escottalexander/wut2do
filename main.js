@@ -197,7 +197,7 @@ function renderVenue(data) {
     let id = data.response.venue.id;
     let venueDescription = data.response.venue.description ? data.response.venue.description : '';
     let addressArr = data.response.venue.location.formattedAddress; //array of 3
-    let photoUrl = data.response.venue.bestPhoto ? `${data.response.venue.bestPhoto.prefix}300x300${data.response.venue.bestPhoto.suffix}` : '';
+    let photoUrl = data.response.venue.bestPhoto ? `${data.response.venue.bestPhoto.prefix}500x500${data.response.venue.bestPhoto.suffix}` : '';
     let phoneNumber = data.response.venue.contact.formattedPhone ? data.response.venue.contact.formattedPhone : '';
     let openCurrently = data.response.venue.popular ? data.response.venue.popular.isOpen ? data.response.venue.popular.isOpen : '' : ''; //boolean
     let hoursArr = data.response.venue.popular ? data.response.venue.popular.timeframes ? data.response.venue.popular.timeframes : '' : ''; //Array of 7 starting with today
@@ -210,7 +210,7 @@ function renderVenue(data) {
     ${ rating !== '' ? `<h3 class="rating">Rating: <span class="score">${rating}</span></h3>` : ''}
     ${venueDescription !== '' ? `<h4>${venueDescription}</h4>` : ''}
     <div class="address">${renderAddress(addressArr)}</div>
-    ${phoneNumber !== '' ? `<div class="contact">${phoneNumber}</div>` : ''}
+    ${phoneNumber !== '' ? `<div class="contact"><p>${phoneNumber}</p></div>` : ''}
     ${ url !== '' ? `<a href=${url}>Website</a>` : ''}
     ${ openCurrently !== '' ? openCurrently ? `<h4 class="currentStatus">Open Currently</h4>`: `<h4 class="currentStatus">Currently Closed</h4>` : ''}
     ${ hoursArr !== '' ? `<div class="times"><h3>Hours:</h3><ul class="timesList">${renderHours(hoursArr)}</ul></div>`: ''}
@@ -256,6 +256,6 @@ function renderMap(latlon, venueNameForMaps) {
     let mapId = STORE.mapId;
     STORE.mapId++;
     return `
-    <a href="https://www.google.com/maps/search/?api=1&query=${venueNameForMaps}" target="_blank"><img class="map" id="map_${mapId}" alt="A map of the current venue's location" src='https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=18&size=350x350&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></a>
+    <a href="https://www.google.com/maps/search/?api=1&query=${venueNameForMaps}" target="_blank"><img class="map" id="map_${mapId}" alt="A map of the current venue's location" src='https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=18&size=500x500&key=AIzaSyDiXUZ7Xr5xmORnIYMRrFh5-Y3HnnMzBc8'/></a>
     `;
 }

@@ -17,8 +17,9 @@
     <main role="main" class="app">
         <div class="msg-handler hidden" aria-live="assertive"></div>
         <form>
+            <h2 class="main-header">Looking for something fun to do?</h2>
             <fieldset>
-                <legend>Location Information</legend>
+                <legend>Enter your location information</legend>
                 <span type="locate" tabindex=0 name="locate" id="locate"></span>
                 <input type="address" name="address" id="address" placeholder="Street Address" aria-label="Street Address" required>
                 <input type="city" name="city" id="city" placeholder="City" aria-label="City" required>
@@ -26,13 +27,13 @@
                 <input type="zip" name="zip" id="zip" placeholder="Zip Code" aria-label="Zip Code" required>
             </fieldset>
             <fieldset>
-                <legend>Preferences</legend>
+                <legend>Add a specific search query or category</legend>
                 <input type="search" placeholder="Optional Search" aria-label="Search Query">
                 <select name="categories" type="dropdown" id="categories" aria-label="Select Category">
                     <option value="">All Categories</option>
                 </select>
             </fieldset>
-            <button type="submit" name="submit" id="submit">Submit</button>
+            <button type="submit" name="submit" id="submit">Find Something To Do!</button>
         </form>
         <section role="region" id="results" aria-live="assertive">
 

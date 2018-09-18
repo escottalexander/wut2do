@@ -203,13 +203,13 @@ h3 {
 }
 
 .msg-handler {
-
     margin: 10px 0;
     position: static;
     text-align: center;
     background-color: #EEECEF;
     color: red;
     border: 5px solid #326892;
+    border-radius: 5px;
 }
 
 .venue {
@@ -246,8 +246,28 @@ form {
     border-radius: 10px;
 }
 
+legend {
+    padding-top: 10px;
+padding-bottom: 10px;
+font-size: 20px;
+}
+
 fieldset {
     border: none;
+}
+
+input {
+    margin: 5px;
+    padding: 5px;
+    font-size: 16px;
+    font-family: 'Fira Sans Condensed', sans-serif;
+}
+
+select {
+    margin: 5px;
+    padding: 5px;
+    font-size: 16px;
+    font-family: 'Fira Sans Condensed', sans-serif;
 }
 
 .title {
@@ -312,6 +332,10 @@ button[type='submit'] {
     /* font-weight: bold; */
 }
 
+p {
+margin: 5px;
+}
+
 li {
     list-style: none;
     border: 1px solid #011936;
@@ -324,6 +348,24 @@ li {
 li p {
     margin-top: 2px;
     margin-bottom: 2px;
+}
+
+.main-header {
+    margin: 10px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: normal;
+    font-family: "Permanent Marker", cursive;
+    color: #326892;
+    /* text-shadow:
+        -2px -2px 0 #326892,
+        0 -2px 0 #326892,
+        2px -2px 0 #326892,
+        2px 0 0 #326892,
+        2px 2px 0 #326892,
+        0 2px 0 #326892,
+        -2px 2px 0 #326892,
+        -2px 0 0 #326892; */
 }
 
 .rating {
