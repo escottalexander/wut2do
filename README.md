@@ -15,4 +15,4 @@ Immediately several venues matching their location, search query and specific ca
 
 ### Technology used
 
-Wut 2 Do was built using HTMl, CSS, and JavaScript with jQuery handling all of the UI as well as various API calls to the Google Reverse Geolocation API, Google Static Maps API, and several calls to the event and venue tracking APIs from Foursuare.
+Wut 2 Do was built using HTML, CSS, and JavaScript with jQuery handling all of the UI as well as various API calls to the Google Reverse Geolocation API, Google Static Maps API, and several calls to the event and venue tracking APIs from Foursuare.
