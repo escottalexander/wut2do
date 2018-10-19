@@ -1,5 +1,5 @@
 # Wut 2 Do
-## -It's where you go when you don't know where to go-
+## *It's where you go when you don't know where to go*
 
 You can visit a live version of this app here: [Wut 2 Do](https://escottalexander.github.io/wut2do/)
 
